@@ -27,12 +27,18 @@ def _fake_response():
 
 
 def _patch_get(mocker):
-    return mocker.patch('cookiecutter.zipfile.requests.get', return_value=_fake_response(), autospec=True)
+    return mocker.patch(
+        'cookiecutter.zipfile.requests.get',
+        return_value=_fake_response(),
+        autospec=True,
+    )
 
 
-def test_unzip_caches_under_url_path_when_query_string_present(mocker, clone_dir) -> None:
+def test_unzip_caches_under_url_path_with_query(mocker, clone_dir) -> None:
     """A query string must not leak into the cache filename."""
-    mocker.patch('cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True)
+    mocker.patch(
+        'cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True
+    )
     get = _patch_get(mocker)
 
     output_dir = zipfile.unzip(
@@ -49,7 +55,9 @@ def test_unzip_caches_under_url_path_when_query_string_present(mocker, clone_dir
 
 def test_unzip_caches_under_url_path_when_fragment_present(mocker, clone_dir) -> None:
     """A fragment must not leak into the cache filename either."""
-    mocker.patch('cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True)
+    mocker.patch(
+        'cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True
+    )
     get = _patch_get(mocker)
 
     output_dir = zipfile.unzip(
@@ -66,7 +74,9 @@ def test_unzip_caches_under_url_path_when_fragment_present(mocker, clone_dir) ->
 
 def test_unzip_plain_url_cache_name_is_unchanged(mocker, clone_dir) -> None:
     """The plain-URL cache filename keeps its existing value."""
-    mocker.patch('cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True)
+    mocker.patch(
+        'cookiecutter.zipfile.prompt_and_delete', return_value=True, autospec=True
+    )
     _patch_get(mocker)
 
     zipfile.unzip(
